@@ -1,0 +1,6 @@
+# User settings for the Team Draft tool.
+# Missing keys fall back to the defaults in src/teamdraft/config.py.
+
+[team]
+# Level used for all stat and attack-power calculations (1-100).
+level = 50

@@ -4,6 +4,14 @@
 # PyCharm metadata
 .idea/
 
-# Python bytecode
+# Python bytecode and build artefacts
 __pycache__/
 *.py[cod]
+*.egg-info/
+build/
+
+# Test cache
+.pytest_cache/
+
+# Downloaded source data (re-downloadable, see ARCHITECTURE.md)
+data/raw/
