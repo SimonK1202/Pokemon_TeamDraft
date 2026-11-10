@@ -36,7 +36,9 @@ pip install -e ".[dev]"
 streamlit run src/teamdraft/gui/app.py
 ```
 
-The app opens in the browser at http://localhost:8501.
+Run it from the project root so the settings in `.streamlit/config.toml` apply. The browser is **not** opened
+automatically: open http://localhost:8501 yourself in the browser of your choice. The app is only reachable
+from this computer.
 
 ## Configuration
 

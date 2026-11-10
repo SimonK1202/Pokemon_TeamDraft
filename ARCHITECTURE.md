@@ -47,6 +47,11 @@ and nothing outside `data/` knows the file format.
 5. **Storage is hidden behind the repository.** Planned: download PokeAPI CSVs into `data/raw/` (not committed),
    import a filtered extract into SQLite (standard library, no extra dependency). Final decision after the data source has been verified.
 6. **Paths are resolved relative to the package**, never the current working directory.
+7. **The GUI library is replaceable.** Only `gui/` may import a GUI library (Streamlit today; Tkinter or others
+   possible later). Everything the GUI shows comes from `reporting/` as plain Python data. A test
+   (`tests/test_architecture.py`) fails if any other package imports a GUI library.
+8. **Streamlit runs quiet and local** (`.streamlit/config.toml`): no browser auto-open, no e-mail prompt,
+   no usage statistics, bound to `localhost` only, terminal shows errors only.
 
 ## Data folders
 
