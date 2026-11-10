@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "teamdraft"
+version = "0.1.0"
+description = "Draft and analyse Pokémon teams for in-game playthroughs (Gen 1-3 first)."
+readme = "README.md"
+requires-python = ">=3.11"  # tomllib is in the standard library from 3.11
+dependencies = [
+    "streamlit>=1.40",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
