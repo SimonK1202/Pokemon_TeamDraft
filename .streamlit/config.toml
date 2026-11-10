@@ -1,5 +1,22 @@
 # Streamlit settings (read when the app is started from the project root).
+# Goal: a quiet, private, local-only development server.
 
 [browser]
 # Do not send usage statistics to Streamlit.
 gatherUsageStats = false
+
+[server]
+# Do not open a browser on start (the system default browser may not be the one we want).
+headless = true
+# Never ask for an e-mail address on first start.
+showEmailPrompt = false
+# Listen on this machine only: the app is not reachable from the network.
+address = "localhost"
+
+[logger]
+# Hide Streamlit's info messages in the terminal; errors are still shown.
+level = "error"
+
+[client]
+# Hide Streamlit's toolbar and menu (e.g. the "Deploy" button) in the app.
+toolbarMode = "minimal"
