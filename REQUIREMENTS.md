@@ -69,5 +69,5 @@ opponent, not only the league of a specific game.
 
 ## Open questions
 
-- **Data risk for R5a.** The source may lack gifts and NPC trades. For now we assume the data is complete;
-  this is re-checked together with the data source.
+- **Data risk for R5a.** Checked: PokeAPI has gifts, gift eggs, static encounters and NPC trades for all 8 games.
+  Crystal seems to lack some wild Pokémon (e.g. Mareep); to be confirmed with a second source when the importer is built.

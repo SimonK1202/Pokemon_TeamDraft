@@ -10,10 +10,9 @@ First games: Red, Blue, Yellow, Gold, Silver, Crystal, FireRed, LeafGreen. More 
 
 ## Status
 
-**Current:** project structure, configuration and an empty Streamlit app. No game data loaded yet.
+**Current:** data model for games, rulesets, species, moves, learnsets, availability and teams. The app shows this data model and whether the raw data files are present. No game data loaded yet.
 
 **Planned next (order may change):**
-- Verify the data source (PokeAPI) for Gen 1-3
 - Importer, database, repository
 - Domain model, rulesets, stat and attack-power calculators
 - GUI: select game, Pokémon and moves
@@ -29,6 +28,12 @@ python -m venv .venv
 .venv\Scripts\Activate.ps1
 pip install -e ".[dev]"
 ```
+
+## Raw data
+
+The game data comes from the [PokeAPI CSV files](https://github.com/PokeAPI/pokeapi/tree/master/data/v2/csv).
+They are not part of the repository. Download every file listed in `data/pokeapi_source.toml` into
+`data/raw/pokeapi/`, ideally from the commit pinned there. The app shows which required files are missing.
 
 ## Run
 

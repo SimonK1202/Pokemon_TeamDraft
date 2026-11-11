@@ -25,11 +25,11 @@ and nothing outside `data/` knows the file format.
 | Package | Responsibility | State |
 |---|---|---|
 | `config.py` | Reads `config.toml` (e.g. level) | Done |
-| `data/` | Importer for raw data, repository that loads one game | Planned |
-| `domain/` | Game, Ruleset, Species, Move, LearnsetEntry, PokemonBuild, Team | Planned |
+| `data/` | Source manifest (done); importer for raw data, repository that loads one game (planned) | Partly done |
+| `domain/` | Data model, see below | Done (no logic beyond validation yet) |
 | `calculators/` | Stats, attack power, coverage | Planned |
-| `reporting/` | View models for the GUI | Planned |
-| `gui/` | Streamlit app | Empty page only |
+| `reporting/` | View models for the GUI (data model overview so far) | Partly done |
+| `gui/` | Streamlit app | Shows the data model only |
 
 ## Key decisions
 
@@ -44,8 +44,12 @@ and nothing outside `data/` knows the file format.
    Abilities, natures and items get optional slots in the domain model so they can be added later.
 4. **Calculators are pure functions.** Input: domain objects and a ruleset. Output: plain values.
    No I/O, no GUI. This keeps them easy to test against reference values.
-5. **Storage is hidden behind the repository.** Planned: download PokeAPI CSVs into `data/raw/` (not committed),
-   import a filtered extract into SQLite (standard library, no extra dependency). Final decision after the data source has been verified.
+5. **Raw data stays raw; an importer builds one SQLite file for all games in scope.** The PokeAPI CSVs are downloaded
+   by hand into `data/raw/pokeapi/` (not committed). `data/pokeapi_source.toml` lists the needed files, what they feed
+   and the pinned PokeAPI commit. The importer filters them to the games in scope and resolves all historical values
+   (`*_past` files, `move_changelog`) once, so the app only does simple lookups. SQLite is in the standard library.
+   Measured: learnsets and encounters of all 8 games are about 1.2 MB; reading the raw CSVs takes about 1 s.
+   Storage stays hidden behind the repository, which loads one game into a `GameData` object.
 6. **Paths are resolved relative to the package**, never the current working directory.
 7. **The GUI library is replaceable.** Only `gui/` may import a GUI library (Streamlit today; Tkinter or others
    possible later). Everything the GUI shows comes from `reporting/` as plain Python data. A test
@@ -53,14 +57,36 @@ and nothing outside `data/` knows the file format.
 8. **Streamlit runs quiet and local** (`.streamlit/config.toml`): no browser auto-open, no e-mail prompt,
    no usage statistics, bound to `localhost` only, terminal shows errors only.
 
+## Data model (`domain/`)
+
+All classes are frozen dataclasses. The GUI shows this model live (diagram, fields, raw files), generated from the code.
+
+| Class | Meaning |
+|---|---|
+| `GameData` | Everything for one game, values already resolved to that game; returned by the repository |
+| `Game`, `VersionGroup` | The game the user picks and the group that shares learnsets and TMs |
+| `Ruleset`, `TypeChart` | Mechanics of one generation: stats, type chart, physical/special rule |
+| `Species`, `Evolution` | Pokédex entry with types and base stats of that generation; how it evolves |
+| `Move`, `LearnsetEntry` | Move values of that version group; how a species learns it (level-up, TM/HM, tutor, egg) |
+| `Availability` | How a species can be obtained in one game (R5a); empty = not obtainable |
+| `Team`, `PokemonBuild` | What the user drafts: up to 6 builds with up to 4 moves, with slots for IVs, EVs, ability, item, nature |
+
+Types are plain identifiers (`"fire"`), species and moves are referenced by their PokeAPI id.
+
 ## Data folders
 
 | Folder | Content | Committed |
 |---|---|---|
-| `data/raw/` | Downloaded source files | No |
+| `data/pokeapi_source.toml` | Manifest: needed raw files, their purpose, pinned PokeAPI commit | Yes |
+| `data/raw/pokeapi/` | Downloaded PokeAPI CSV files | No |
+| `data/teamdraft.sqlite` | Built by the importer (planned) | No |
 | `data/legacy/` | Hand-written JSON libraries from the first prototype; compared during data-source verification, then removed | Yes (temporary) |
 
 ## Risks
 
-- **Historical accuracy of the data source (N2).** PokeAPI may hold only current values for some stats, moves
-  or type chart entries. This is checked before any code builds on it.
+- **Historical accuracy of the data source (N2).** Checked: Gen 1 Special stat (all 151), Gen 1 type chart, older
+  types (e.g. Magnemite) and older move values (e.g. Bite was Normal in Gen 1) are in the data.
+  Remaining Gen 1 quirks not covered by PokeAPI may need hand-written corrections.
+- **Gaps in encounter data (R5a).** Crystal seems to lack some wild Pokémon (e.g. Mareep). Needs a second source and
+  possibly a small hand-maintained override file.
+- **Deoxys** has a different form in FireRed and LeafGreen. Not relevant for availability (event only), handled later.
