@@ -30,6 +30,8 @@ opponent, not only the league of a specific game.
 - **R4 Game selection.** The user selects a game first; everything below uses that game's data and ruleset.
 - **R5 Pokémon selection.** The user picks up to 6 Pokémon for a team from the **whole Pokédex** of the selected game:
   all species that exist in it (Gen 1: 151, Gen 2: 251, FireRed/LeafGreen: 386).
+  Plus up to **2 option slots** (bench): Pokémon that can easily be swapped with a team member.
+  Option slots do not count for team coverage (R11, R12).
 - **R5a Availability marker.** Each Pokémon is marked if it is obtainable in the selected game
   **without external help**.
   - Available: wild encounters, fixed encounters, gifts, in-game trades with NPCs, evolution by level-up,
@@ -45,7 +47,9 @@ opponent, not only the league of a specific game.
   A move in several groups is shown in each, with a note (e.g. Blastoise: Skull Bash by level-up *and* TM).
 - **R7 Evolution hints.** For each move, show if **only** a previous or later evolution can learn it,
   or if they **also** can (with method and level).
-- **R8 Move selection.** The user picks up to 4 moves per Pokémon.
+- **R8 Move selection.** The user picks up to 4 moves per Pokémon, plus **1 option move**.
+  The option move shows its attack power and offensive type coverage, but does not count for the Pokémon's
+  or the team's coverage (R11).
 - **R9 Move details.** Show type, accuracy and **attack power**.
 - **R10 Attack power.** The outgoing number of *my* Pokémon, independent of the opponent:
   move base power, my Pokémon's attacking stat at the set level, STAB multiplier, and the
@@ -53,15 +57,16 @@ opponent, not only the league of a specific game.
 
 ## Coverage (later)
 
-- **R11 Offensive coverage.** For each Pokémon and the whole team: which defending types the chosen damaging moves
+- **R11 Offensive coverage.** For each Pokémon and the whole team (without option slots and option moves): which defending types the chosen damaging moves
   hit super-effective, neutral, not very effective or not at all. STAB moves are marked.
-- **R12 Defensive coverage.** For each Pokémon and the whole team: the multiplier each attacking type has
+- **R12 Defensive coverage.** For each Pokémon and the whole team (without option slots): the multiplier each attacking type has
   against it (×0 to ×4), **type chart only**.
 - **R13 Reporting.** The GUI shows the final team with the coverage results (R11, R12).
 
 ## Non-functional
 
-- **N1 Data source.** Data comes from a freely downloadable source (planned: PokeAPI CSVs, to be verified first).
+- **N1 Data source.** Data comes from a freely downloadable source: PokeAPI CSVs (verified), plus a small file of
+  hand-made corrections (`data/corrections.toml`).
 - **N2 Correctness per generation.** Stats, types, moves and the type chart must match the selected game,
   not today's values (e.g. Gen 1 single Special stat, Gen 1 type chart, Gen 1-3 physical/special by type).
 - **N3 Testability.** Calculators are pure functions with tests against published reference values.
@@ -69,5 +74,9 @@ opponent, not only the league of a specific game.
 
 ## Open questions
 
-- **Data risk for R5a.** Checked: PokeAPI has gifts, gift eggs, static encounters and NPC trades for all 8 games.
-  Crystal seems to lack some wild Pokémon (e.g. Mareep); to be confirmed with a second source when the importer is built.
+- **Celebi in Crystal.** PokeAPI lists it as a fixed encounter (GS Ball). Originally a Japan-only event, in the
+  3DS Virtual Console release obtainable in-game. Currently marked as obtainable; is that what we want?
+
+Resolved: PokeAPI has gifts, gift eggs, fixed encounters and NPC trades for all 8 games (R5a).
+Note: Mareep, Girafarig and Remoraid are trade-only in Crystal (checked against the game's disassembly and
+Bulbapedia), so PokeAPI is correct there and no correction is needed.

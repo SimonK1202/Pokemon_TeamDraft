@@ -168,3 +168,9 @@ name = "location_areas.csv"
 required = false
 feeds = []
 purpose = "Later: show where a Pokémon is found"
+
+[[files]]
+name = "item_names.csv"
+required = false
+feeds = []
+purpose = "Later: item display names, e.g. Fire Stone"

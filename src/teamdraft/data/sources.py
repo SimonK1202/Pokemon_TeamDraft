@@ -4,10 +4,7 @@ import tomllib
 from dataclasses import dataclass
 from pathlib import Path
 
-# Resolved relative to this file so it works regardless of the current working directory.
-PROJECT_ROOT = Path(__file__).resolve().parents[3]
-MANIFEST_PATH = PROJECT_ROOT / "data" / "pokeapi_source.toml"
-RAW_DIR = PROJECT_ROOT / "data" / "raw" / "pokeapi"
+from teamdraft.data.paths import MANIFEST_PATH, RAW_DIR
 
 
 @dataclass(frozen=True)

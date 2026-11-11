@@ -11,7 +11,8 @@ from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
 
-from teamdraft.data.sources import RAW_DIR, SourceManifest, load_manifest
+from teamdraft.data.paths import RAW_DIR
+from teamdraft.data.sources import SourceManifest, load_manifest
 from teamdraft.domain.availability import Acquisition, Availability
 from teamdraft.domain.game import Game, VersionGroup
 from teamdraft.domain.game_data import GameData

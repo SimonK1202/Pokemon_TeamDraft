@@ -3,8 +3,8 @@ from pathlib import Path
 from streamlit.testing.v1 import AppTest
 
 APP_PATH = Path(__file__).resolve().parents[1] / "src" / "teamdraft" / "gui" / "app.py"
-# The first run imports Streamlit and pandas (cold start), which can exceed the 3 s default.
-STARTUP_TIMEOUT = 15
+# The first run imports Streamlit and pandas (cold start), which took up to 10 s here.
+STARTUP_TIMEOUT = 30
 
 
 def test_app_runs_without_exception():
@@ -14,7 +14,17 @@ def test_app_runs_without_exception():
     assert app.title[0].value == "Pokémon Team Draft"
 
 
-def test_app_shows_data_model():
+def test_app_shows_game_data_and_data_model():
     app = AppTest.from_file(str(APP_PATH)).run(timeout=STARTUP_TIMEOUT)
+    assert [tab.label for tab in app.tabs] == ["Game data", "Data model"]
     assert "Data model" in [header.value for header in app.header]
     assert any("GameData" in expander.label for expander in app.expander)
+
+
+def test_switching_the_game_shows_its_data():
+    app = AppTest.from_file(str(APP_PATH)).run(timeout=STARTUP_TIMEOUT)
+    if not app.selectbox:
+        return  # no imported game data on this machine; the import button is shown instead
+    app.selectbox[0].select_index(5).run(timeout=STARTUP_TIMEOUT)  # Crystal
+    assert not app.exception
+    assert app.metric[0].value == "2"
