@@ -106,8 +106,16 @@ def test_deoxys_form_per_game(games):
     assert games["firered"].learnset(386)
 
 
+def test_event_only_pokemon_are_not_obtainable(games):
+    assert not games["crystal"].is_available(251)  # Celebi (GS Ball)
+    assert not games["firered"].is_available(249)  # Lugia (Mystic Ticket)
+    assert not games["leafgreen"].is_available(386)  # Deoxys (Aurora Ticket)
+    assert games["gold"].is_available(249)  # Lugia is a normal fixed encounter in Gold
+
+
 def test_load_corrections():
     corrections = load_corrections()
     assert corrections.moves[("rest", 1)] == {"pp": 10}
     assert ("rest", 4) not in corrections.moves
     assert corrections.min_happiness == {2: 220, 3: 220}
+    assert ("crystal", "celebi") in corrections.unobtainable

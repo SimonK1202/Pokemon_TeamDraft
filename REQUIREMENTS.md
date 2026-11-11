@@ -36,7 +36,9 @@ opponent, not only the league of a specific game.
   **without external help**.
   - Available: wild encounters, fixed encounters, gifts, in-game trades with NPCs, evolution by level-up,
     stone or friendship, breeding (Gen 2+).
-  - Not available: trading with another cartridge (so also trade evolutions), event Pokémon (e.g. Mew).
+  - Not available: trading with another cartridge (so also trade evolutions), event Pokémon (e.g. Mew;
+    Celebi in Crystal; Lugia, Ho-Oh and Deoxys in FireRed/LeafGreen, which need event tickets).
+  - Breeding is simplified: every non-legendary Pokémon can breed; egg groups are not checked.
   - Version exclusives are marked per game (e.g. Ekans available in Red, not in Blue).
 - **R6 Move list.** For a selected Pokémon, show all moves it can learn in the selected game, grouped in this order:
   1. Level-up (with the level)
@@ -74,9 +76,8 @@ opponent, not only the league of a specific game.
 
 ## Open questions
 
-- **Celebi in Crystal.** PokeAPI lists it as a fixed encounter (GS Ball). Originally a Japan-only event, in the
-  3DS Virtual Console release obtainable in-game. Currently marked as obtainable; is that what we want?
+None at the moment.
 
-Resolved: PokeAPI has gifts, gift eggs, fixed encounters and NPC trades for all 8 games (R5a).
+Resolved: Celebi in Crystal counts as an event Pokémon (not obtainable). PokeAPI has gifts, gift eggs, fixed encounters and NPC trades for all 8 games (R5a).
 Note: Mareep, Girafarig and Remoraid are trade-only in Crystal (checked against the game's disassembly and
 Bulbapedia), so PokeAPI is correct there and no correction is needed.

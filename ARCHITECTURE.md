@@ -84,14 +84,14 @@ Types are plain identifiers (`"fire"`), species and moves are referenced by thei
 | `data/raw/pokeapi/` | Downloaded PokeAPI CSV files | No |
 | `data/corrections.toml` | Hand-made corrections where PokeAPI differs from the games, each with a reason | Yes |
 | `data/teamdraft.sqlite` | Built by the importer: `python -m teamdraft.data.importer` | No |
-| `data/legacy/` | Hand-written JSON libraries from the first prototype; compared during data-source verification, then removed | Yes (temporary) |
+| `data/reference/` | Files of the original games, downloaded by `tools/verify_against_games.py` | No |
 
 ## Risks
 
 - **Historical accuracy of the data source (N2).** Checked against the game disassemblies (pret/pokered,
   pokecrystal, pokefirered): Gen 1 base stats, types, type chart and learnsets match exactly; all moves of Gen 1-3
-  and the Gen 2 type chart match except a few values fixed in `data/corrections.toml`. Not yet cross-checked:
-  Gen 2-3 base stats and learnsets.
+  and the Gen 2 type chart match except a few values fixed in `data/corrections.toml`.
+  **To do: detailed check of Gen 2-3** (base stats, types, learnsets, encounters) by extending the same tool.
 - **Availability is a model (R5a).** Breeding is simplified (legendary/mythical cannot breed, egg groups are not
   checked). Encounter data of Crystal was checked against the disassembly and is correct.
 - **Deoxys** has one form per game: FireRed Attack, LeafGreen Defense. The importer maps this in `FORM_BY_GAME`;

@@ -151,6 +151,7 @@ class Corrections:
 
     moves: dict[tuple[str, int], dict[str, int | str]]  # (move identifier, generation) -> fields, e.g. {"pp": 10}
     min_happiness: dict[int, int]  # generation -> friendship threshold
+    unobtainable: frozenset[tuple[str, str]] = frozenset()  # (game, species identifier): event-only (R5a)
 
 
 def load_corrections(path: Path = CORRECTIONS_PATH) -> Corrections:
@@ -163,7 +164,10 @@ def load_corrections(path: Path = CORRECTIONS_PATH) -> Corrections:
             moves[(entry["identifier"], generation)] = fields
     evolution = raw.get("evolution", {})
     min_happiness = {generation: evolution["min_happiness"] for generation in evolution.get("generations", [])}
-    return Corrections(moves=moves, min_happiness=min_happiness)
+    unobtainable = frozenset(
+        (game, entry["species"]) for entry in raw.get("unobtainable", []) for game in entry["games"]
+    )
+    return Corrections(moves=moves, min_happiness=min_happiness, unobtainable=unobtainable)
 
 
 def build_database(
@@ -422,8 +426,11 @@ class _GameImporter:
             if method not in ENCOUNTER_METHODS:
                 raise ValueError(f"Unknown encounter method {method!r} in {self.identifier}: decide how it counts (R5a).")
             sid = int(self.p.pokemon[r["pokemon_id"]]["species_id"])
-            if sid in self.pokemon_id:
-                available[sid].add(ENCOUNTER_METHODS[method])
+            if sid not in self.pokemon_id:
+                continue
+            if (self.identifier, self.p.species[str(sid)]["identifier"]) in self.p.corrections.unobtainable:
+                continue  # event-only, see data/corrections.toml
+            available[sid].add(ENCOUNTER_METHODS[method])
 
         # Evolution and breeding can unlock further species, which can unlock more: repeat until stable.
         changed = True
