@@ -1,0 +1,176 @@
+# Raw PokeAPI CSV files used by the importer.
+# Download each file by hand from <repository>/tree/<commit>/<path> into data/raw/pokeapi/ (not committed).
+# "feeds" names the domain classes the file is imported into. Optional files are not used yet.
+
+[source]
+repository = "https://github.com/PokeAPI/pokeapi"
+path = "data/v2/csv"
+commit = "bcb44559daa0f1e28ae396464f82cdbac761c47e"
+downloaded = 2026-11-11
+
+# Games
+[[files]]
+name = "versions.csv"
+feeds = ["Game"]
+purpose = "Games and their version group"
+
+[[files]]
+name = "version_names.csv"
+feeds = ["Game"]
+purpose = "Display names, e.g. FireRed"
+
+[[files]]
+name = "version_groups.csv"
+feeds = ["VersionGroup"]
+purpose = "Version groups, their generation and release order"
+
+# Species
+[[files]]
+name = "pokemon_species.csv"
+feeds = ["Species", "Evolution"]
+purpose = "Pokédex entries, generation, previous evolution stage"
+
+[[files]]
+name = "pokemon_species_names.csv"
+feeds = ["Species"]
+purpose = "Display names, e.g. Mr. Mime"
+
+[[files]]
+name = "pokemon.csv"
+feeds = ["Species"]
+purpose = "Links the default form to its species"
+
+[[files]]
+name = "stats.csv"
+feeds = ["Species"]
+purpose = "Stat ids, including the Gen 1 Special stat"
+
+[[files]]
+name = "pokemon_stats.csv"
+feeds = ["Species"]
+purpose = "Base stats (current values)"
+
+[[files]]
+name = "pokemon_stats_past.csv"
+feeds = ["Species"]
+purpose = "Older base stats, valid up to the given generation"
+
+[[files]]
+name = "pokemon_types.csv"
+feeds = ["Species"]
+purpose = "Types (current values)"
+
+[[files]]
+name = "pokemon_types_past.csv"
+feeds = ["Species"]
+purpose = "Older types, valid up to the given generation (e.g. Magnemite in Gen 1)"
+
+# Mechanics
+[[files]]
+name = "types.csv"
+feeds = ["TypeChart", "Ruleset"]
+purpose = "Types per generation and their Gen 1-3 physical/special class"
+
+[[files]]
+name = "type_efficacy.csv"
+feeds = ["TypeChart"]
+purpose = "Type chart (current values)"
+
+[[files]]
+name = "type_efficacy_past.csv"
+feeds = ["TypeChart"]
+purpose = "Older type chart entries, valid up to the given generation"
+
+# Moves and learnsets
+[[files]]
+name = "moves.csv"
+feeds = ["Move"]
+purpose = "Moves (current values)"
+
+[[files]]
+name = "move_changelog.csv"
+feeds = ["Move"]
+purpose = "Values before a change in the given version group"
+
+[[files]]
+name = "move_names.csv"
+feeds = ["Move"]
+purpose = "Display names, e.g. U-turn"
+
+[[files]]
+name = "pokemon_moves.csv"
+feeds = ["LearnsetEntry"]
+purpose = "Learnsets per version group with method and level"
+
+[[files]]
+name = "pokemon_move_methods.csv"
+feeds = ["LearnsetEntry"]
+purpose = "Learn methods: level-up, machine, tutor, egg"
+
+[[files]]
+name = "machines.csv"
+feeds = ["LearnsetEntry"]
+purpose = "TM/HM numbers per version group (HMs are numbered from 101)"
+
+# Evolution
+[[files]]
+name = "pokemon_evolution.csv"
+feeds = ["Evolution"]
+purpose = "Evolution method, level, item; valid from the given version group"
+
+[[files]]
+name = "evolution_triggers.csv"
+feeds = ["Evolution"]
+purpose = "Evolution triggers: level-up, trade, use-item"
+
+[[files]]
+name = "items.csv"
+feeds = ["Evolution"]
+purpose = "Item identifiers for stone and trade evolutions, e.g. fire-stone"
+
+# Availability
+[[files]]
+name = "encounters.csv"
+feeds = ["Availability"]
+purpose = "Encounters per game"
+
+[[files]]
+name = "encounter_slots.csv"
+feeds = ["Availability"]
+purpose = "Links an encounter to its method"
+
+[[files]]
+name = "encounter_methods.csv"
+feeds = ["Availability"]
+purpose = "Methods incl. gift, static and npc-trade"
+
+# Optional: not used yet
+[[files]]
+name = "generations.csv"
+required = false
+feeds = []
+purpose = "Generation names; the generation number is enough for now"
+
+[[files]]
+name = "type_names.csv"
+required = false
+feeds = []
+purpose = "Type display names; equal to the capitalised identifiers in English"
+
+[[files]]
+name = "locations.csv"
+required = false
+feeds = []
+purpose = "Later: show where a Pokémon is found"
+
+[[files]]
+name = "location_areas.csv"
+required = false
+feeds = []
+purpose = "Later: show where a Pokémon is found"
+
+[[files]]
+name = "item_names.csv"
+required = false
+feeds = []
+purpose = "Later: item display names, e.g. Fire Stone"

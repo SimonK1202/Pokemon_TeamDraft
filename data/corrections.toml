@@ -1,0 +1,84 @@
+# Hand-made corrections, applied by the importer on top of the raw PokeAPI data.
+# Only for values where PokeAPI (commit in pokeapi_source.toml) differs from the games or from REQUIREMENTS.md.
+#
+# Checked 2026-11-12 with tools/verify_against_games.py against the game disassemblies (commits pinned there):
+#   pret/pokered       data/moves/moves.asm, data/pokemon/base_stats/*.asm, data/pokemon/evos_moves.asm,
+#                      data/types/type_matchups.asm
+#   pret/pokecrystal   data/moves/moves.asm, data/types/type_matchups.asm, data/wild/*.asm
+#   pret/pokefirered   src/data/battle_moves.h
+# Result: Gen 1 base stats, types, type chart and learnsets match exactly; Gen 2 type chart matches;
+# the moves below differ because a later change is missing in PokeAPI's move_changelog.csv.
+
+[[move]]
+identifier = "rest"
+generations = [1, 2, 3]
+pp = 10
+reason = "PP was 10 before Gen 9; change missing in move_changelog"
+source = "pokered, pokecrystal data/moves/moves.asm; pokefirered src/data/battle_moves.h"
+
+[[move]]
+identifier = "soft-boiled"
+generations = [1, 2, 3]
+pp = 10
+reason = "PP was 10 before Gen 9; change missing in move_changelog"
+source = "pokered, pokecrystal data/moves/moves.asm; pokefirered src/data/battle_moves.h"
+
+[[move]]
+identifier = "milk-drink"
+generations = [2, 3]
+pp = 10
+reason = "PP was 10 before Gen 9; change missing in move_changelog"
+source = "pokecrystal data/moves/moves.asm; pokefirered src/data/battle_moves.h"
+
+[[move]]
+identifier = "slack-off"
+generations = [3]
+pp = 10
+reason = "PP was 10 before Gen 9; change missing in move_changelog"
+source = "pokefirered src/data/battle_moves.h"
+
+[[move]]
+identifier = "mind-reader"
+generations = [2, 3]
+pp = 5
+reason = "PP was 5 in the games in scope; change missing in move_changelog"
+source = "pokecrystal data/moves/moves.asm; pokefirered src/data/battle_moves.h"
+
+[[move]]
+identifier = "luster-purge"
+generations = [3]
+power = 70
+reason = "Power was 70 before Gen 7; change missing in move_changelog"
+source = "pokefirered src/data/battle_moves.h"
+
+# Friendship evolutions (e.g. Espeon, Golbat -> Crobat): PokeAPI stores today's threshold 160.
+[evolution]
+generations = [2, 3]
+min_happiness = 220
+reason = "Friendship threshold was 220 before Gen 8"
+source = "pokecrystal constants/pokemon_data_constants.asm (HAPPINESS_TO_EVOLVE); pokefirered src/pokemon.c"
+
+# Event-only Pokémon that PokeAPI lists as encounters. Events do not count as obtainable (REQUIREMENTS R5a).
+[[unobtainable]]
+games = ["crystal"]
+species = "celebi"
+reason = "GS Ball: originally a Japan-only mobile event (in-game only in the 3DS Virtual Console release)"
+source = "https://bulbapedia.bulbagarden.net/wiki/GS_Ball"
+
+[[unobtainable]]
+games = ["firered", "leafgreen"]
+species = "lugia"
+reason = "Navel Rock: only reachable with the Mystic Ticket event item"
+source = "https://bulbapedia.bulbagarden.net/wiki/Navel_Rock"
+
+[[unobtainable]]
+games = ["firered", "leafgreen"]
+species = "ho-oh"
+reason = "Navel Rock: only reachable with the Mystic Ticket event item"
+source = "https://bulbapedia.bulbagarden.net/wiki/Navel_Rock"
+
+[[unobtainable]]
+games = ["firered", "leafgreen"]
+species = "deoxys"
+reason = "Birth Island: only reachable with the Aurora Ticket event item"
+source = "https://bulbapedia.bulbagarden.net/wiki/Birth_Island"

@@ -10,13 +10,12 @@ First games: Red, Blue, Yellow, Gold, Silver, Crystal, FireRed, LeafGreen. More 
 
 ## Status
 
-**Current:** project structure, configuration and an empty Streamlit app. No game data loaded yet.
+**Current:** the data of all 8 games is imported and checked against the original games. In the app you pick a game and see its Pokédex (types, base stats, how to obtain each Pokémon) and the data model behind it.
 
 **Planned next (order may change):**
-- Verify the data source (PokeAPI) for Gen 1-3
-- Importer, database, repository
-- Domain model, rulesets, stat and attack-power calculators
-- GUI: select game, Pokémon and moves
+- Detailed check of the Gen 2-3 data against the original games (Gen 1 is fully checked)
+- Stat and attack-power calculators
+- GUI: select Pokémon and moves (team of 6 plus 2 option slots, 4 moves plus 1 option move)
 - Team and coverage calculators
 - Team report in the GUI
 
@@ -29,6 +28,32 @@ python -m venv .venv
 .venv\Scripts\Activate.ps1
 pip install -e ".[dev]"
 ```
+
+## Raw data
+
+The game data comes from the [PokeAPI CSV files](https://github.com/PokeAPI/pokeapi/tree/master/data/v2/csv).
+They are not part of the repository. Download every file listed in `data/pokeapi_source.toml` into
+`data/raw/pokeapi/`, ideally from the commit pinned there. The app shows which required files are missing.
+
+Then build the game data (about 4 s), or use the "Import raw data" button in the app:
+
+```powershell
+python -m teamdraft.data.importer
+```
+
+Where PokeAPI differs from the original games, `data/corrections.toml` holds a small correction with its reason
+and source.
+
+### Verifying the data
+
+Compares the imported data with the original games (the [pret](https://github.com/pret) disassemblies, at pinned
+commits) and lists every difference. Needs internet access on the first run; files are cached in `data/reference/`.
+
+```powershell
+python tools/verify_against_games.py
+```
+
+Exit code 0 means: only known, documented differences.
 
 ## Run
 
