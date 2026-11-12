@@ -62,6 +62,10 @@ and nothing outside `data/` knows the file format.
 9. **The team draft is enabled per generation**, not per game: `DRAFT_GENERATIONS` in `reporting/team_draft.py`
    (Gen 1 today). The view model also decides which stats and build details a generation has, so enabling Gen 2-3
    is one line there and no GUI change (R1).
+10. **Evolutions stay simple (R15).** A species knows only its previous stage (`Species.evolves_from`). This is
+    enough to walk back the chain for availability and for moves of previous evolutions. The evolution method is
+    used only to exclude trade evolutions. A separate evolution relation (several methods per species, as from
+    Gen 4) was considered and postponed until a requirement needs it.
 
 ## Data model (`domain/`)
 

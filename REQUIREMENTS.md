@@ -48,14 +48,26 @@ opponent, not only the league of a specific game.
 
   A move in several groups is shown in each, with a note (e.g. Blastoise: Skull Bash by level-up *and* TM).
 - **R7 Evolution hints.** For each move, show if **only** a previous or later evolution can learn it,
-  or if they **also** can (with method and level).
+  or if they **also** can, with the learn method and level of that evolution (e.g. "Charmander, level-up 22").
+  The way the Pokémon evolves (level, stone, ...) is not shown, see R15.
 - **R8 Move selection.** The user picks up to 4 moves per Pokémon, plus **2 option moves**.
+  Selectable are the moves of R6 plus the moves that **only a previous evolution** can learn (R15).
   Option moves show their attack power and offensive type coverage, but do not count for the Pokémon's
   or the team's coverage (R11).
 - **R9 Move details.** Show type, accuracy and **attack power**.
 - **R10 Attack power.** The outgoing number of *my* Pokémon, independent of the opponent:
   move base power, my Pokémon's attacking stat at the set level, STAB multiplier, and the
   generation's physical/special rule. The exact formula is defined and documented together with the calculator.
+
+## Evolutions
+
+- **R15 End-game focus.** The drafter targets the end game and will mostly pick final evolutions.
+  Evolutions are kept simple. In order of priority:
+  1. **Availability:** is the evolved Pokémon obtainable in the selected game (R5a)?
+  2. **Move pool:** which moves can it have, including moves that only a previous evolution can learn (R8)?
+  3. **Learn before evolving:** which moves must be learned by a previous evolution, and at what level (R7)?
+  4. **Evolution method** (level, stone, friendship, ...): not needed, except to exclude trade evolutions (R5a).
+     No further evolution data or logic is planned until a requirement needs it.
 
 ## Coverage (later)
 
