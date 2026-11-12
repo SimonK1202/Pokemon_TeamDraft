@@ -10,12 +10,12 @@ First games: Red, Blue, Yellow, Gold, Silver, Crystal, FireRed, LeafGreen. More 
 
 ## Status
 
-**Current:** the data of all 8 games is imported and checked against the original games. In the app you pick a game and see its Pokédex (types, base stats, how to obtain each Pokémon) and the data model behind it.
+**Current:** the data of all 8 games is imported and checked against the original games. In the app you pick a game and see its Pokédex (types, base stats, how to obtain each Pokémon) and the data model behind it. For Red, Blue and Yellow the *Team draft* tab shows the layout of the drafter: 6 team slots, 2 option slots and the coverage areas, still as placeholders. Two layouts (cards and rows) can be switched to compare them.
 
 **Planned next (order may change):**
 - Detailed check of the Gen 2-3 data against the original games (Gen 1 is fully checked)
 - Stat and attack-power calculators
-- GUI: select Pokémon and moves (team of 6 plus 2 option slots, 4 moves plus 1 option move)
+- GUI: select Pokémon and moves in the draft layout (team of 6 plus 2 option slots, 4 moves plus 2 option moves)
 - Team and coverage calculators
 - Team report in the GUI
 

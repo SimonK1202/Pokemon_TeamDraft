@@ -28,8 +28,8 @@ and nothing outside `data/` knows the file format.
 | `data/` | Source manifest, importer (raw CSV → SQLite), repository that loads one game | Done |
 | `domain/` | Data model, see below | Done (no logic beyond validation yet) |
 | `calculators/` | Stats, attack power, coverage | Planned |
-| `reporting/` | View models for the GUI (game overview and data model so far) | Partly done |
-| `gui/` | Streamlit app | Game picker with game data overview, data model |
+| `reporting/` | View models for the GUI (game overview, data model, team draft layout) | Partly done |
+| `gui/` | Streamlit app | Game picker above all tabs; team draft placeholders (Gen 1), game data overview, data model |
 
 ## Key decisions
 
@@ -72,7 +72,7 @@ All classes are frozen dataclasses. The GUI shows this model live (diagram, fiel
 | `Species`, `Evolution` | Pokédex entry with types and base stats of that generation; how it evolves |
 | `Move`, `LearnsetEntry` | Move values of that version group; how a species learns it (level-up, TM/HM, tutor, egg) |
 | `Availability` | How a species can be obtained in one game (R5a); empty = not obtainable |
-| `Team`, `PokemonBuild` | What the user drafts: up to 6 builds with up to 4 moves, with slots for IVs, EVs, ability, item, nature. Planned (R5, R8): 2 option slots and 1 option move, both left out of coverage |
+| `Team`, `PokemonBuild` | What the user drafts: up to 6 builds with up to 4 moves, with slots for IVs, EVs, ability, item, nature. Planned (R5, R8): 2 option slots and 2 option moves, both left out of coverage |
 
 Types are plain identifiers (`"fire"`), species and moves are referenced by their PokeAPI id.
 

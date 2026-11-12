@@ -49,8 +49,8 @@ opponent, not only the league of a specific game.
   A move in several groups is shown in each, with a note (e.g. Blastoise: Skull Bash by level-up *and* TM).
 - **R7 Evolution hints.** For each move, show if **only** a previous or later evolution can learn it,
   or if they **also** can (with method and level).
-- **R8 Move selection.** The user picks up to 4 moves per Pokémon, plus **1 option move**.
-  The option move shows its attack power and offensive type coverage, but does not count for the Pokémon's
+- **R8 Move selection.** The user picks up to 4 moves per Pokémon, plus **2 option moves**.
+  Option moves show its attack power and offensive type coverage, but does not count for the Pokémon's
   or the team's coverage (R11).
 - **R9 Move details.** Show type, accuracy and **attack power**.
 - **R10 Attack power.** The outgoing number of *my* Pokémon, independent of the opponent:
