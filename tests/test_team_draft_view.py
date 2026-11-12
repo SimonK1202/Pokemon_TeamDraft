@@ -44,7 +44,8 @@ def test_level_and_iv_are_passed_through():
     assert (view.level, view.iv) == (42, 0)
 
 
-def test_coverage_areas():
+def test_coverage_areas_per_move_pokemon_and_team():
     view = build_draft_view(YELLOW, GEN1_RULES, 50)
-    assert [a.label for a in view.offensive] == ["Per move", "Per Pokémon", "Team"]
-    assert [a.label for a in view.defensive] == ["Per Pokémon", "Team"]
+    assert view.move_coverage.label == "Offensive"
+    assert [a.label for a in view.pokemon_coverage] == ["Offensive", "Defensive"]
+    assert [a.label for a in view.team_coverage] == ["Offensive", "Defensive"]

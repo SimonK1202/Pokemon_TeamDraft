@@ -59,6 +59,9 @@ and nothing outside `data/` knows the file format.
    (`tests/test_architecture.py`) fails if any other package imports a GUI library.
 8. **Streamlit runs quiet and local** (`.streamlit/config.toml`): no browser auto-open, no e-mail prompt,
    no usage statistics, bound to `localhost` only, terminal shows errors only.
+9. **The team draft is enabled per generation**, not per game: `DRAFT_GENERATIONS` in `reporting/team_draft.py`
+   (Gen 1 today). The view model also decides which stats and build details a generation has, so enabling Gen 2-3
+   is one line there and no GUI change (R1).
 
 ## Data model (`domain/`)
 

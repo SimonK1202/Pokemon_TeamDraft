@@ -50,7 +50,7 @@ opponent, not only the league of a specific game.
 - **R7 Evolution hints.** For each move, show if **only** a previous or later evolution can learn it,
   or if they **also** can (with method and level).
 - **R8 Move selection.** The user picks up to 4 moves per Pokémon, plus **2 option moves**.
-  Option moves show its attack power and offensive type coverage, but does not count for the Pokémon's
+  Option moves show their attack power and offensive type coverage, but do not count for the Pokémon's
   or the team's coverage (R11).
 - **R9 Move details.** Show type, accuracy and **attack power**.
 - **R10 Attack power.** The outgoing number of *my* Pokémon, independent of the opponent:
@@ -64,6 +64,11 @@ opponent, not only the league of a specific game.
 - **R12 Defensive coverage.** For each Pokémon and the whole team (without option slots): the multiplier each attacking type has
   against it (×0 to ×4), **type chart only**.
 - **R13 Reporting.** The GUI shows the final team with the coverage results (R11, R12).
+- **R14 Draft layout** (agreed with stakeholders). One row per Pokémon, 6 team rows then 2 option rows. Each row:
+  picture, stats (level from `config.toml`, IV 0) with nature, ability and held item listed below (marked when the
+  generation does not have them), the 6 moves each with its offensive coverage, and the Pokémon's offensive and
+  defensive coverage. The team's offensive and defensive coverage sits below the list.
+  The draft is offered for Red, Blue and Yellow first; other games show a note.
 
 ## Non-functional
 

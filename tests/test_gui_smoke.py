@@ -30,17 +30,16 @@ def test_switching_the_game_shows_its_data():
     assert app.metric[0].value == "2"
 
 
-def test_gen_1_game_shows_the_draft_layouts():
+def test_gen_1_game_shows_the_draft():
     app = AppTest.from_file(str(APP_PATH)).run(timeout=STARTUP_TIMEOUT)
     if not app.selectbox:
         return  # no imported game data on this machine
     app.selectbox[0].select_index(2).run(timeout=STARTUP_TIMEOUT)  # Yellow
+    assert not app.exception
     assert "Team draft – Yellow" in [header.value for header in app.header]
-    for layout in ("Cards", "Rows"):
-        app.radio[0].set_value(layout).run(timeout=STARTUP_TIMEOUT)
-        assert not app.exception
-        labels = [m.value for m in app.markdown]
-        assert sum("Option 1" in label for label in labels) == 1
+    labels = [m.value for m in app.markdown]
+    assert sum("**Option 1**" in label for label in labels) == 1
+    assert "Team coverage" in [sub.value for sub in app.subheader]
 
 
 def test_other_games_show_no_draft():
@@ -48,5 +47,5 @@ def test_other_games_show_no_draft():
     if not app.selectbox:
         return
     app.selectbox[0].select_index(5).run(timeout=STARTUP_TIMEOUT)  # Crystal
-    assert not app.radio
+    assert not any(header.value.startswith("Team draft") for header in app.header)
     assert any("Red, Blue and Yellow" in info.value for info in app.info)

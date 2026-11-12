@@ -54,8 +54,10 @@ class DraftView:
     details: tuple[DetailSlot, ...]
     slots: tuple[PokemonSlot, ...]
     moves: tuple[MoveSlot, ...]
-    offensive: tuple[CoverageArea, ...]
-    defensive: tuple[CoverageArea, ...]
+    # Grouped by where the GUI shows them: next to each move, next to each Pokémon, below the team.
+    move_coverage: CoverageArea
+    pokemon_coverage: tuple[CoverageArea, ...]
+    team_coverage: tuple[CoverageArea, ...]
 
     @property
     def team_slots(self) -> tuple[PokemonSlot, ...]:
@@ -84,13 +86,13 @@ def build_draft_view(game: Game, ruleset: Ruleset, level: int) -> DraftView:
         + tuple(PokemonSlot(f"Option {n}", True) for n in range(1, OPTION_SLOTS + 1)),
         moves=tuple(MoveSlot(f"Move {n}", False) for n in range(1, MAX_MOVES + 1))
         + tuple(MoveSlot(f"Option move {n}", True) for n in range(1, OPTION_MOVES + 1)),
-        offensive=(
-            CoverageArea("Per move", "Types each single move hits super effectively."),
-            CoverageArea("Per Pokémon", "Combined coverage of the 4 moves of one Pokémon."),
-            CoverageArea("Team", "Combined coverage of all team moves. Option slots and option moves excluded."),
+        move_coverage=CoverageArea("Offensive", "Types this single move hits super effectively."),
+        pokemon_coverage=(
+            CoverageArea("Offensive", "Combined coverage of the 4 moves. Option moves excluded."),
+            CoverageArea("Defensive", "Weaknesses and resistances from the Pokémon's types."),
         ),
-        defensive=(
-            CoverageArea("Per Pokémon", "Weaknesses and resistances from the Pokémon's types."),
-            CoverageArea("Team", "Weaknesses and resistances summed over the team. Option slots excluded."),
+        team_coverage=(
+            CoverageArea("Offensive", "Combined coverage of all team moves. Option slots and option moves excluded."),
+            CoverageArea("Defensive", "Weaknesses and resistances summed over the team. Option slots excluded."),
         ),
     )

@@ -1,13 +1,9 @@
-"""Team draft screen: placeholders for team, option slots and coverage. Display only; content comes from reporting.
-
-Two layouts are offered side by side until one is chosen.
-"""
+"""Team draft screen: one row per Pokémon, coverage next to what it belongs to. Display only; content comes from reporting."""
 
 import streamlit as st
 
 from teamdraft.reporting.team_draft import CoverageArea, DraftView, PokemonSlot
 
-LAYOUTS = ("Cards", "Rows")
 EMPTY = "–"
 PICTURE_HEIGHT = 96
 
@@ -15,70 +11,37 @@ PICTURE_HEIGHT = 96
 def render_team_draft(view: DraftView) -> None:
     st.header(f"Team draft – {view.game_name}")
     st.caption(f"Level {view.level}, IV {view.iv} for all stats. Everything below is a placeholder for now.")
-    layout = st.radio("Layout", LAYOUTS, horizontal=True)
-    if layout == "Cards":
-        _render_cards(view)
-    else:
-        _render_rows(view)
 
-
-def _render_cards(view: DraftView) -> None:
     st.subheader("Team")
-    _render_card_grid(view, view.team_slots)
+    for slot in view.team_slots:
+        _render_row(view, slot)
     st.subheader("Option slots")
     st.caption("Bench Pokémon that can easily be swapped in. Not part of team coverage.")
-    _render_card_grid(view, view.option_slots)
+    for slot in view.option_slots:
+        _render_row(view, slot)
 
-    offensive, defensive = st.columns(2)
-    with offensive:
-        _render_coverage("Offensive coverage", view.offensive)
-    with defensive:
-        _render_coverage("Defensive coverage", view.defensive)
-
-
-def _render_card_grid(view: DraftView, slots: tuple[PokemonSlot, ...], per_row: int = 3) -> None:
-    for start in range(0, len(slots), per_row):
-        for column, slot in zip(st.columns(per_row), slots[start : start + per_row]):
-            with column, st.container(border=True):
-                st.markdown(f"**{slot.label}** · Pokémon {EMPTY}")
-                _render_picture()
-                st.markdown(_stats_table(view))
-                st.markdown(_details_line(view))
-                st.markdown(_moves_list(view))
-
-
-def _render_rows(view: DraftView) -> None:
-    team, coverage = st.columns([3, 1])
-    with team:
-        st.subheader("Team")
-        for slot in view.team_slots:
-            _render_row(view, slot)
-        st.subheader("Option slots")
-        st.caption("Not part of team coverage.")
-        for slot in view.option_slots:
-            _render_row(view, slot)
-    with coverage:
-        _render_coverage("Offensive coverage", view.offensive)
-        _render_coverage("Defensive coverage", view.defensive)
+    st.subheader("Team coverage")
+    for column, area in zip(st.columns(len(view.team_coverage)), view.team_coverage):
+        with column:
+            _render_coverage_box(area)
 
 
 def _render_row(view: DraftView, slot: PokemonSlot) -> None:
     with st.container(border=True):
-        picture, stats, moves = st.columns([1, 3, 3])
+        picture, build, moves, coverage = st.columns([1, 2, 4, 2])
         with picture:
             st.markdown(f"**{slot.label}**")
-            _render_picture()
-        with stats:
+            with st.container(height=PICTURE_HEIGHT, border=True):
+                st.caption("Picture")
+        with build:
             st.markdown(f"Pokémon {EMPTY}")
             st.markdown(_stats_table(view))
-            st.markdown(_details_line(view))
+            st.markdown(_details_list(view))
         with moves:
-            st.markdown(_moves_list(view))
-
-
-def _render_picture() -> None:
-    with st.container(height=PICTURE_HEIGHT, border=True):
-        st.caption("Picture")
+            st.markdown(_moves_table(view))
+        with coverage:
+            for area in view.pokemon_coverage:
+                _render_coverage_box(area)
 
 
 def _stats_table(view: DraftView) -> str:
@@ -88,24 +51,24 @@ def _stats_table(view: DraftView) -> str:
     return "\n".join((header, divider, values))
 
 
-def _details_line(view: DraftView) -> str:
-    parts = [
-        f"{detail.label}: {EMPTY}" if detail.available else f"{detail.label}: *not in Gen {view.generation}*"
-        for detail in view.details
-    ]
-    return " · ".join(parts)
-
-
-def _moves_list(view: DraftView) -> str:
-    # Option moves in italics, so they read as "not counted".
+def _details_list(view: DraftView) -> str:
     return "\n".join(
-        f"- *{move.label}: {EMPTY}*" if move.is_option else f"- {move.label}: {EMPTY}" for move in view.moves
+        f"- **{detail.label}:** {EMPTY}" if detail.available else f"- **{detail.label}:** *not in Gen {view.generation}*"
+        for detail in view.details
     )
 
 
-def _render_coverage(title: str, areas: tuple[CoverageArea, ...]) -> None:
-    st.subheader(title)
-    for area in areas:
-        with st.container(border=True):
-            st.markdown(f"**{area.label}**")
-            st.caption(area.description)
+def _moves_table(view: DraftView) -> str:
+    # Each move gets its own offensive coverage cell; option moves in italics, so they read as "not counted".
+    lines = [f"| Move | {view.move_coverage.label} coverage |", "|---|---|"]
+    for move in view.moves:
+        label = f"*{move.label}*" if move.is_option else move.label
+        lines.append(f"| {label}: {EMPTY} | {EMPTY} |")
+    return "\n".join(lines)
+
+
+def _render_coverage_box(area: CoverageArea) -> None:
+    with st.container(border=True):
+        st.markdown(f"**{area.label} coverage**")
+        st.caption(area.description)
+        st.markdown(EMPTY)
